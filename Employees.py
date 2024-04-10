@@ -15,6 +15,7 @@ def employees_rewrite(sort_type):
 
 
 employees_rewrite('salary')
+employees_rewrite('firstName')
 
 
 
