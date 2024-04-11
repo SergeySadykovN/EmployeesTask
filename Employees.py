@@ -1,22 +1,20 @@
 import json
-from operator import itemgetter
 
 
 def employees_rewrite(sort_type):
     with open('employees.json', 'r') as file:
-        json_data = json.load(file)
-        print(json_data)
-        sorted_data = sorted(json_data['employees'], key=itemgetter(sort_type))
-        data_indent = json.dumps(sorted_data, indent=4)
-        print(data_indent)
+        json_data = json.load(file)  # -> dict
+        sort_data = sorted(json_data['employees'], key=lambda x: x[sort_type])
+        if type(json_data['employees'][0][sort_type]) is int:
+            sort_data = sorted(json_data['employees'], key=lambda x: x[sort_type], reverse=True)
+        elif sort_type not in json_data['employees'][0]:
+            raise ValueError('key not found')
 
-        with open(f'employees_[sort_type]_sorted.json', 'w') as outfile:
-            json.dump(data_indent, outfile)
+        with open(f'employees_{sort_type}_sorted.json', 'w') as out_file:
+            json.dump(sort_data, out_file, indent=2)
 
 
 employees_rewrite('salary')
 employees_rewrite('firstName')
 employees_rewrite('lastName')
-
-
-
+employees_rewrite('any')
